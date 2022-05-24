@@ -1,0 +1,26 @@
+{
+  "name": "qyjutils",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "coverage": "jest --coverage"
+  },
+  "directories": {
+    "test": "__test__"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/simongong/qyjUtils.git"
+  },
+  "author": "simon.gong64@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/simongong/qyjUtils/issues"
+  },
+  "homepage": "https://github.com/simongong/qyjUtils#readme",
+  "devDependencies": {
+    "jest": "^28.1.0"
+  }
+}
