@@ -8,7 +8,7 @@ module.exports = {
    * @param {Boolean} isLunar 日期是公历还是农历，默认公历
    * @return 生日未过且离30天以内返回原值，否则返回-1
    */
-  getBirthdayDiff(birthdayStr, isLunar) {
+  getBirthdayDiff(birthdayStr, threshold = 30, isLunar) {
     const today = this.todayFMD()
     const dateSplit = birthdayStr.split('-')
     let birthdayFMD = {
@@ -25,7 +25,7 @@ module.exports = {
     }
     
     const diff = this.getDateDiff(today, birthdayFMD)
-    return diff > 30 ? -1 : diff
+    return diff > threshold ? -1 : diff
   },
   /**
    * 获取两个date差几天。默认排序规则，date1小，date2大，返回正数。反之返回负数。

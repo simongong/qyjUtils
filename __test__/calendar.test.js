@@ -31,16 +31,27 @@ describe('getBirthdayDiff 获取离某个生日差几天', () => {
     expect(result2).toBe(30)
   });
 
+  test('今年生日未过且下个生日在制定threshold天以内，返回天数', () => {
+    const birthday = Calendar.addNDay(today, 3)
+    const birthStr = `${birthday.month}-${birthday.day}`
+    const result = Calendar.getBirthdayDiff(birthStr, 7)
+    expect(result).toBe(3)
+    const birthday2 = Calendar.addNDay(today, 30)
+    const birthStr2 = `${birthday2.month}-${birthday2.day}`
+    const result2 = Calendar.getBirthdayDiff(birthStr2, 7)
+    expect(result2).toBe(-1)
+  });
+
   test('支持正常农历场景', () => {
     let birthday = Calendar.addNDay(today, 3)
     birthday = Solar2Lunar.toLunar(birthday.year, birthday.month, birthday.day)
     const birthStr = `${birthday.month}-${birthday.day}`
-    const result = Calendar.getBirthdayDiff(birthStr, true)
+    const result = Calendar.getBirthdayDiff(birthStr, 30, true)
     expect(result).toBe(3)
     let birthday2 = Calendar.addNDay(today, 31)
     birthday2 = Solar2Lunar.toLunar(birthday2.year, birthday2.month, birthday2.day)
     const birthStr2 = `${birthday2.month}-${birthday2.day}`
-    const result2 = Calendar.getBirthdayDiff(birthStr2, true)
+    const result2 = Calendar.getBirthdayDiff(birthStr2, 30, true)
     expect(result2).toBe(-1)
   });
 
