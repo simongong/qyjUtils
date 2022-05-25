@@ -1,12 +1,16 @@
+/**
+ * 给小程序云函数公用的一些工具方法
+ * @module qyjUtils
+ */
 const Solar2Lunar = require('./solar2lunar')
 
 module.exports = {
   /**
    * 获取离生日 date 相差几天，支持农历。返回值为整数。
-   * 农历生日处理逻辑：把今天换成农历 => 计算还未过的最近的农历生日年份 => 下个还未过的公历生日日期 => 计算两个公历日期的间隔
    * @param {String} birthdayStr 日期字符串，比如：'5-3'
+   * @param {Number} threshold 最大差值的阈值，比如传入 7，那么相差7天以上的话就返回-1
    * @param {Boolean} isLunar 日期是公历还是农历，默认公历
-   * @return 生日未过且离30天以内返回原值，否则返回-1
+   * @return {Number} 生日未过且离${threshold}天以内返回原值，否则返回-1
    */
   getBirthdayDiff(birthdayStr, threshold = 30, isLunar) {
     const today = this.todayFMD()
@@ -15,7 +19,7 @@ module.exports = {
       month: +dateSplit[0],
       day: +dateSplit[1],
     }
-    // 统一转成公历处理
+    // 农历生日处理逻辑：把今天换成农历 => 计算还未过的最近的农历生日年份 => 下个还未过的公历生日日期 => 计算两个公历日期的间隔
     if (isLunar) {
       const todayLunar = Solar2Lunar.toLunar(today.year, today.month, today.day)
       birthdayFMD.year = (new Date(`${todayLunar.year}-${birthdayStr}`).getTime() < new Date(this.toDateStr(todayLunar)).getTime()) ? todayLunar.year + 1 : todayLunar.year
@@ -28,9 +32,10 @@ module.exports = {
     return diff > threshold ? -1 : diff
   },
   /**
-   * 获取两个date差几天。默认排序规则，date1小，date2大，返回正数。反之返回负数。
-   * @param {*} date1 
-   * @param {*} date2 
+   * 获取两个date差几天。
+   * @param {Object} date1 
+   * @param {Object} date2 
+   * @return {Number} 默认排序规则，date1小，date2大，返回正数。反之返回负数。
    */
   getDateDiff(date1, date2) {
     const DAY_STEP_MILLI = 24 * 60 * 60 * 1000  // 一天的毫秒数
@@ -38,13 +43,15 @@ module.exports = {
   },
   /**
    * 获取某一天的农历日期。返回值为日期字符串
-   * @param {*} date 公历日期字符串，比如：'2022-5-3'
+   * @param {String} date 公历日期字符串，比如：'2022-5-3'
+   * @return {String} 农历日期字符串
    */
   getLunarDate(date) {
 
   },
   /**
-   * 获取本日的结构化对象
+   * 获取当日的结构化对象
+   * @return {Object} {year, month, day}
    */
   todayFMD() {
     const _date = new Date()
@@ -60,14 +67,15 @@ module.exports = {
   /**
    * 获取日期字符串
    * @param {Object} date 结构化日期对象
-   * @returns 日期字符串，比如：'2022-5-20'
+   * @returns {String} 日期字符串，比如：'2022-5-20'
    */
   toDateStr(date = {}) {
     return `${+date.year}-${+date.month}-${+date.day}`
   },
   /**
    * 返回日期字符串对应的结构化对象
-   * @param {string} dateStr 日期字符串
+   * @param {String} dateStr 日期字符串
+   * @return {Object} {year, month, day}
    */
   toFMD(dateStr) {
     if (typeof dateStr === 'string' && dateStr.includes('-')) {
@@ -83,8 +91,9 @@ module.exports = {
 
   /**
    * 获取某日的后n天日期对象：按时间戳计算偏移，再反解析为日期
-   * @param {date} object 日期对象
-   * @param {n} number 数字
+   * @param {Object} date 日期对象
+   * @param {Number} n 数字
+   * @return {Object} 日期对象
    */
   addNDay(date, n) {
     const DAY_STEP_MILLI = 24 * 60 * 60 * 1000// 一天的毫秒数
@@ -96,17 +105,19 @@ module.exports = {
       day: newDay.getDate()
     }
   },
+  /**
+   * 获取某日的前n天日期对象：按时间戳计算偏移，再反解析为日期
+   * @param {Object} date 日期对象
+   * @param {Number} n 数字
+   * @return {Object} 日期对象
+   */
   substractNDay(date, n) {
     return this.addNDay(date, n * -1)
   },
   /**
-   * 比较两个日期是否是同一天：-1 date2小于date1；0 相等；1 date2大于date1
-   * @param {object} date1 被比较对象 
-   * @param {object} date2  比较对象
-   */
-  /**
    * 获取农历是哪天（初几）
-   * @param {object} date 日期对象
+   * @param {Object} date 日期对象
+   * @return {String} 农历日子。比如：'初三'
    */
   getLunarDay(date) {
     const lunar = Solar2Lunar.toLunar(date.year, date.month, date.day, true)

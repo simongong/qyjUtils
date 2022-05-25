@@ -1,11 +1,12 @@
 {
   "name": "qyjutils",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "doc": "jsdoc2md src/calendar.js"
   },
   "directories": {
     "test": "__test__"
@@ -21,6 +22,7 @@
   },
   "homepage": "https://github.com/simongong/qyjUtils#readme",
   "devDependencies": {
-    "jest": "^28.1.0"
+    "jest": "^28.1.0",
+    "jsdoc-to-markdown": "^7.1.1"
   }
 }
