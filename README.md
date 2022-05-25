@@ -3,6 +3,7 @@ Some utility functions for cloud function develeopment of Tencent miniprogram.
 给小程序云函数公用的一些工具方法
 
 * [qyjUtils](#module_qyjUtils)
+    * [.getDateByIndex(indexes)](#module_qyjUtils.getDateByIndex) ⇒ <code>Object</code>
     * [.getBirthdayDiff(birthdayStr, threshold, isLunar)](#module_qyjUtils.getBirthdayDiff) ⇒ <code>Number</code>
     * [.getDateDiff(date1, date2)](#module_qyjUtils.getDateDiff) ⇒ <code>Number</code>
     * [.getLunarDate(date)](#module_qyjUtils.getLunarDate) ⇒ <code>String</code>
@@ -12,6 +13,18 @@ Some utility functions for cloud function develeopment of Tencent miniprogram.
     * [.addNDay(date, n)](#module_qyjUtils.addNDay) ⇒ <code>Object</code>
     * [.substractNDay(date, n)](#module_qyjUtils.substractNDay) ⇒ <code>Object</code>
     * [.getLunarDay(date)](#module_qyjUtils.getLunarDay) ⇒ <code>String</code>
+
+<a name="module_qyjUtils.getDateByIndex"></a>
+
+### qyjUtils.getDateByIndex(indexes) ⇒ <code>Object</code>
+根据小程序生日picker组件生成的index，返回实际的日期
+
+**Kind**: static method of [<code>qyjUtils</code>](#module_qyjUtils)  
+**Returns**: <code>Object</code> - {isLunar, date}  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| indexes | <code>Array</code> | 生日picker组件保存的index值数组。比如：[1,2,3] 农历 3-4 |
 
 <a name="module_qyjUtils.getBirthdayDiff"></a>
 

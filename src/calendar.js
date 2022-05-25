@@ -3,8 +3,26 @@
  * @module qyjUtils
  */
 const Solar2Lunar = require('./solar2lunar')
-
+const genArrayByInc = (start, len, suffix) => {
+  return Array(len).fill().map((item, index) => suffix ? (index + start) + suffix : (index + start))
+}
+const birthdayParams = [
+  ['公历', '农历'],
+  genArrayByInc(1, 12),
+  genArrayByInc(1, 31),
+]
 module.exports = {
+  /**
+   * 根据小程序生日picker组件生成的index，返回实际的日期
+   * @param {Array} indexes 生日picker组件保存的index值数组。比如：[1,2,3] 农历 3-4
+   * @returns {Object} {isLunar, date}
+   */
+  getDateByIndex(indexes) {
+    return {
+      isLunar: !!indexes[0],
+      date: birthdayParams[1][indexes[1]] + '-' + birthdayParams[2][indexes[2]],
+    }
+  },
   /**
    * 获取离生日 date 相差几天，支持农历。返回值为整数。
    * @param {String} birthdayStr 日期字符串，比如：'5-3'

@@ -82,3 +82,12 @@ describe('getLunarDay 获取某天的农历日子', () => {
     expect(lunarDay2).toBe('初三')
   });
 })
+
+describe('getDateByIndex 获取picker index的日期', () => {
+  test('正常返回', () => {
+    const index = [1,2,3]
+    const date = Calendar.getDateByIndex(index)
+    expect(date.isLunar).toBe(true)
+    expect(date.date).toBe('3-4')
+  });
+})
