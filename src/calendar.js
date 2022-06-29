@@ -50,6 +50,40 @@ module.exports = {
     return diff > threshold ? -1 : diff
   },
   /**
+   * 获取起始日期在内、过去N周的日期字符串数组，类似 Github Punchcard 的数据。
+   * @param {startDay} object 起始日期
+   * @param {n} number 周数
+   * @return array [[7,1,2,3,4,5,6]...] 周数据的二维数组
+   */
+   getPastNWeeks(startDay, n) {
+    const datesCount = n * 7
+    const dates = []
+    let weekDates = []
+    const todayWeek = this.getDayOfWeek(startDay.year, startDay.month, startDay.day)
+    const endDate = this.addNDay(startDay, todayWeek === 7 ? 6 : 6 - todayWeek)
+    for (let i = 0; i < datesCount; i++) {
+      const currentDate = this.toTimeStr(this.substractNDay(endDate, i))
+      weekDates.unshift(currentDate)
+      if (weekDates.length === 7) {
+        dates.unshift(weekDates)
+        weekDates = []
+      }
+    }
+    return dates
+  },
+  /**
+   * 计算指定日期星期几
+   * @param {number} year 年份
+   * @param {number} month  月份
+   * @param {number} day 日期
+   */
+   getDayOfWeek(year, month, day) {
+    return new Date(Date.UTC(year, month - 1, day)).getUTCDay()
+  },
+  toTimeStr(dateInfo = {}) {
+    return `${+dateInfo.year}-${+dateInfo.month}-${+dateInfo.day}`
+  },
+  /**
    * 获取两个date差几天。
    * @param {Object} date1 
    * @param {Object} date2 

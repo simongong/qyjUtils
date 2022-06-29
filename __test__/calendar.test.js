@@ -91,3 +91,20 @@ describe('getDateByIndex 获取picker index的日期', () => {
     expect(date.date).toBe('3-4')
   });
 })
+
+describe('getPastNWeeks 获取本日所属周在内、过去连续N周的日期数组', () => {
+  const dates = Calendar.getPastNWeeks({
+    year: 2022, month: 3, day: 3
+  }, 16)
+  test('2022-3-3的往前连续16周的数组长度是16', () => {
+    expect(dates.length).toBe(16);
+  });
+  test('2022-3-3的往前连续16周的起始日是2021-11-14', () => {
+    const firstWeek = dates[0]
+    expect(firstWeek[0]).toBe('2021-11-14');
+  });
+  test('2022-3-3的往前连续16周的结束日是2022-3-12', () => {
+    const lastWeek = dates[15]
+    expect(lastWeek[6]).toBe('2022-3-5');
+  });
+})
